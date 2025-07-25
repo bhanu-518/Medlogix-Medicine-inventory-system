@@ -2,20 +2,26 @@ import React, { useState } from "react";
 import {
   MdMedication,
   MdMedicalServices,
-  MdInventory,
   MdEvent,
-  MdBarChart,
   MdGroup,
-  MdLogout
+  MdLogout,
+  MdHome,
+  MdFileOpen,
+  MdBarChart
 } from "react-icons/md";
 import MedicalSupplies from "./MedicalSupplies";
+import Home from "./Home";
+import TrackExpiryDamage from "./TrackExpiryDamage";
+import GenerateReport from "./GenerateReport";
+
 
 const SIDEBAR_VIEWS = [
+  { key: 'home', label: 'Home', icon: MdHome },
   { key: 'medications', label: 'Manage Medications', icon: MdMedication },
   { key: 'supplies', label: 'Manage Medical Supplies', icon: MdMedicalServices },
-  { key: 'stock', label: 'Check Stock Levels', icon: MdInventory },
+  { key: 'stock', label: 'Check Stock Levels', icon: MdBarChart },
   { key: 'expiry', label: 'Track Expiry/Damage', icon: MdEvent },
-  { key: 'reports', label: 'Generate Reports', icon: MdBarChart },
+  { key: 'reports', label: 'Generate Reports', icon: MdFileOpen  },
   { key: 'users', label: 'Manage Users', icon: MdGroup },
 ];
 
@@ -23,20 +29,14 @@ function Dashboard({ onLogout }) {
   const [activeView, setActiveView] = useState('medications');
 
   function renderMainContent() {
+    if (activeView === 'home') {
+      return <Home />
+    }
     if (activeView === 'medications') {
       return (
         <div className="bg-gray-50 rounded-2xl shadow p-10 flex flex-col items-center w-full max-w-4xl mt-10">
-          <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
-            alt="Profile"
-            className="w-32 h-32 rounded-full mb-6"
-          />
-          <h1 className="text-2xl font-bold mb-2 text-center">
-            Welcome to MedLogix Dashboard
-          </h1>
-          <p className="text-gray-500 text-center">
-            Your Medication Inventory System
-          </p>
+          <h1 className="text-2xl font-bold mb-2 text-center">Manage Medications</h1>
+          <p className="text-gray-500 text-center">Medication management coming soon.</p>
         </div>
       );
     }
@@ -52,20 +52,11 @@ function Dashboard({ onLogout }) {
       );
     }
     if (activeView === 'expiry') {
-      return (
-        <div className="bg-gray-50 rounded-2xl shadow p-10 flex flex-col items-center w-full max-w-4xl mt-10">
-          <h1 className="text-2xl font-bold mb-2 text-center">Track Expiry/Damage</h1>
-          <p className="text-gray-500 text-center">Expiry/damage tracking coming soon.</p>
-        </div>
-      );
+      return <TrackExpiryDamage />;
+      
     }
     if (activeView === 'reports') {
-      return (
-        <div className="bg-gray-50 rounded-2xl shadow p-10 flex flex-col items-center w-full max-w-4xl mt-10">
-          <h1 className="text-2xl font-bold mb-2 text-center">Generate Reports</h1>
-          <p className="text-gray-500 text-center">Reports generation coming soon.</p>
-        </div>
-      );
+      return <GenerateReport />
     }
     if (activeView === 'users') {
       return (
@@ -91,11 +82,10 @@ function Dashboard({ onLogout }) {
             {SIDEBAR_VIEWS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
-                className={`group flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors duration-200 border ${
-                  activeView === key
+                className={`group flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors duration-200 border ${activeView === key
                     ? 'bg-blue-600 text-white'
                     : 'bg-white text-blue-900 hover:bg-blue-50 hover:text-blue-600'
-                }`}
+                  }`}
                 onClick={() => setActiveView(key)}
               >
                 <Icon size={24} className={`transition-colors duration-200 group-hover:text-blue-600 ${activeView === key ? 'text-yellow-300' : ''}`} />
