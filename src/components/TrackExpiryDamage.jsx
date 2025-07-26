@@ -1,63 +1,52 @@
 import React, { useState } from 'react';
-import { Calendar, AlertTriangle } from 'lucide-react';
-import './SectionStyles.css'; 
-
-// Add expiry/type/status to your initial medical supplies
-const supplies = [
-  {
-    id: 1,
-    item: "Sterile Gloves",
-    category: "PPE",
-    quantity: "500 boxes",
-    availability: "IN STOCK",
-    expiry: "2024-08-30",
-    type: "normal",
-    status: "Normal"
-  },
-  {
-    id: 2,
-    item: "Syringes (10ml)",
-    category: "Injection",
-    quantity: "1000 units",
-    availability: "LOW",
-    expiry: "2024-06-10",
-    type: "expiring",
-    status: "Expiring Soon"
-  },
-  {
-    id: 3,
-    item: "Bandages",
-    category: "Wound Care",
-    quantity: "200 rolls",
-    availability: "IN STOCK",
-    expiry: "2024-12-15",
-    type: "normal",
-    status: "Normal"
-  },
-  {
-    id: 4,
-    item: "Alcohol Swabs",
-    category: "Antiseptic",
-    quantity: "0",
-    availability: "OUT OF STOCK",
-    expiry: "2024-05-15",
-    type: "expired",
-    status: "Expired"
-  },
-  {
-    id: 5,
-    item: "Damaged Syringes",
-    category: "Injection",
-    quantity: "N/A",
-    availability: "OUT OF STOCK",
-    expiry: "2024-12-15",
-    type: "damaged",
-    status: "Damaged"
-  }
-];
+import { Calendar, AlertCircle } from 'lucide-react';
+import './SectionStyles.css';
 
 const TrackExpiryDamage = () => {
   const [filter, setFilter] = useState('all');
+
+  const supplies = [
+    {
+      id: 1,
+      name: "Sterile Gloves",
+      expiry: "2024-08-30",
+      daysLeft: 115,
+      type: "normal",
+      status: "Normal"
+    },
+    {
+      id: 2,
+      name: "Syringes (10ml)",
+      expiry: "2024-06-10",
+      daysLeft: 30,
+      type: "expiring",
+      status: "Expiring Soon"
+    },
+    {
+      id: 3,
+      name: "Bandages",
+      expiry: "2024-12-15",
+      daysLeft: 222,
+      type: "normal",
+      status: "Normal"
+    },
+    {
+      id: 4,
+      name: "Alcohol Swabs",
+      expiry: "2024-05-15",
+      daysLeft: 0,
+      type: "expired",
+      status: "Expired"
+    },
+    {
+      id: 5,
+      name: "Damaged Syringes",
+      expiry: "2024-12-15",
+      daysLeft: 0,
+      type: "damaged",
+      status: "Damaged"
+    }
+  ];
 
   const filteredItems = supplies.filter(item => {
     if (filter === 'expired') return item.type === 'expired';
@@ -66,12 +55,12 @@ const TrackExpiryDamage = () => {
     return true;
   });
 
-  const getStatusBadge = (status) => {
+  const getStatusColor = (status) => {
     switch (status) {
-      case 'Expired': return <span className="badge danger">Expired</span>;
-      case 'Expiring Soon': return <span className="badge warning">Expiring Soon</span>;
-      case 'Damaged': return <span className="badge danger">Damaged</span>;
-      default: return <span className="badge success">Normal</span>;
+      case 'Expired': return 'danger';
+      case 'Expiring Soon': return 'warning';
+      case 'Damaged': return 'danger';
+      default: return 'success';
     }
   };
 
@@ -86,7 +75,7 @@ const TrackExpiryDamage = () => {
               className={`filter-button ${filter === type ? 'active' : ''}`}
               onClick={() => setFilter(type)}
             >
-              {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
+              {type === 'all' ? 'All Items' : type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
           ))}
         </div>
@@ -96,27 +85,40 @@ const TrackExpiryDamage = () => {
         <table className="data-table">
           <thead>
             <tr>
-              <th>Item</th>
-              <th>Category</th>
-              <th>Quantity</th>
+              <th>Item Name</th>
               <th>Expiry Date</th>
+              <th>Days Left</th>
               <th>Status</th>
               <th>Priority</th>
             </tr>
           </thead>
           <tbody>
             {filteredItems.map(item => (
-              <tr key={item.id} className={item.type === 'expired' || item.type === 'damaged' ? 'critical-row' : item.type === 'expiring' ? 'low-row' : ''}>
-                <td>{item.item}</td>
-                <td>{item.category}</td>
-                <td>{item.quantity}</td>
-                <td className="date-cell">
-                  <Calendar size={16} className="mr-1" /> {item.expiry}
+              <tr
+                key={item.id}
+                className={
+                  item.type === 'expired' || item.type === 'damaged'
+                    ? 'critical-row'
+                    : item.type === 'expiring'
+                    ? 'low-row'
+                    : ''
+                }
+              >
+                <td className="font-medium">{item.name}</td>
+                <td>
+                  <div className="date-cell">
+                    <Calendar size={16} /> {item.expiry}
+                  </div>
                 </td>
-                <td>{getStatusBadge(item.status)}</td>
+                <td>{item.type === 'damaged' ? 'N/A' : item.daysLeft}</td>
+                <td>
+                  <span className={`status-badge ${getStatusColor(item.status)}`}>
+                    {item.status}
+                  </span>
+                </td>
                 <td>
                   {(item.type === 'expired' || item.type === 'expiring' || item.type === 'damaged') && (
-                    <AlertTriangle size={20} color="#e74c3c" />
+                    <AlertCircle size={20} className="alert-icon" />
                   )}
                 </td>
               </tr>
@@ -129,6 +131,7 @@ const TrackExpiryDamage = () => {
 };
 
 export default TrackExpiryDamage;
+
 
 
 

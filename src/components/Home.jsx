@@ -58,10 +58,11 @@ const WelcomeSection = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="welcome-title text-4xl md:text-5xl font-bold text-blue-800 mb-3">
+          <h1 className="welcome-title text-4xl md:text-4xl font-bold text-blue-800 mb-3 text-left">
             MedLogix Inventory Dashboard
           </h1>
-          <p className="welcome-subtitle text-lg text-gray-600">
+
+          <p className="welcome-subtitle text-lg text-gray-600 text-left">
             Manage your medication inventory efficiently
           </p>
         </div>
@@ -72,7 +73,7 @@ const WelcomeSection = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {metrics.map((metric) => (
-              <div 
+              <div
                 key={metric.id}
                 className="metric-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
               >
@@ -84,10 +85,9 @@ const WelcomeSection = () => {
                     <p className="text-3xl font-bold mt-2">
                       {metric.value}
                     </p>
-                    <p className={`mt-2 text-sm ${
-                      metric.trend === 'up' ? 'text-green-500' : 
-                      metric.trend === 'down' ? 'text-red-500' : 'text-gray-500'
-                    }`}>
+                    <p className={`mt-2 text-sm ${metric.trend === 'up' ? 'text-green-500' :
+                        metric.trend === 'down' ? 'text-red-500' : 'text-gray-500'
+                      }`}>
                       {metric.change}
                     </p>
                   </div>
@@ -128,7 +128,7 @@ const WelcomeSection = () => {
               View All
             </button>
           </div>
-          
+
           <div className="space-y-4">
             {activities.map((activity) => (
               <div key={activity.id} className="activity-item flex items-center p-4 hover:bg-gray-50 rounded-lg transition-colors duration-200">
