@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import './SectionStyles.css';
 
 const MedicalSupplies = () => {
@@ -7,6 +7,11 @@ const MedicalSupplies = () => {
     { id: 1, item: 'Syringe', category: 'Equipment', quantity: 100, availability: 'IN STOCK' },
     { id: 2, item: 'Bandage', category: 'First Aid', quantity: 50, availability: 'LOW' },
     { id: 3, item: 'Gloves', category: 'Protection', quantity: 0, availability: 'OUT OF STOCK' },
+    { id: 4, item: 'Thermometer', category: 'Diagnostic', quantity: 25, availability: 'IN STOCK' },
+    { id: 5, item: 'Scissors', category: 'Surgical Tools', quantity: 10, availability: 'LOW' },
+    { id: 6, item: 'Face Mask', category: 'Protection', quantity: 0, availability: 'OUT OF STOCK' },
+    { id: 7, item: 'Alcohol Swabs', category: 'Disinfectant', quantity: 75, availability: 'IN STOCK' },
+    { id: 8, item: 'IV Drip', category: 'Fluid Therapy', quantity: 15, availability: 'LOW' }
   ]);
 
   const [showForm, setShowForm] = useState(false);
@@ -16,14 +21,41 @@ const MedicalSupplies = () => {
     quantity: '',
     availability: 'IN STOCK',
   });
+  const [editingId, setEditingId] = useState(null);
 
   const handleAddSupply = (e) => {
     e.preventDefault();
-    const id = supplies.length + 1;
-    const updatedSupplies = [...supplies, { id, ...newSupply }];
-    setSupplies(updatedSupplies);
+    if (editingId !== null) {
+      // Update existing supply
+      setSupplies(supplies.map(s =>
+        s.id === editingId ? { id: editingId, ...newSupply } : s
+      ));
+    } else {
+      // Add new supply
+      const id = supplies.length ? Math.max(...supplies.map(s => s.id)) + 1 : 1;
+      setSupplies([...supplies, { id, ...newSupply }]);
+    }
+
     setNewSupply({ item: '', category: '', quantity: '', availability: 'IN STOCK' });
+    setEditingId(null);
     setShowForm(false);
+  };
+
+  const handleEdit = (supply) => {
+    setNewSupply({
+      item: supply.item,
+      category: supply.category,
+      quantity: supply.quantity,
+      availability: supply.availability,
+    });
+    setEditingId(supply.id);
+    setShowForm(true);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      setSupplies(supplies.filter((s) => s.id !== id));
+    }
   };
 
   return (
@@ -32,9 +64,13 @@ const MedicalSupplies = () => {
         <h1>Manage Medical Supplies</h1>
         <button
           className="bg-[#025E92] text-white px-6 py-2 rounded font-semibold hover:bg-[#01446d] transition-colors"
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm);
+            setNewSupply({ item: '', category: '', quantity: '', availability: 'IN STOCK' });
+            setEditingId(null);
+          }}
         >
-          {showForm ? "Cancel Add" : "Add Supply"}
+          {showForm ? 'Cancel' : 'Add Supply'}
         </button>
       </div>
 
@@ -64,7 +100,6 @@ const MedicalSupplies = () => {
             onChange={(e) => setNewSupply({ ...newSupply, quantity: e.target.value })}
             required
           />
-
           <select
             className="border px-3 py-2 rounded w-40 text-[#025E92] border-[#025E92] font-semibold"
             value={newSupply.availability}
@@ -74,12 +109,11 @@ const MedicalSupplies = () => {
             <option value="LOW">LOW</option>
             <option value="OUT OF STOCK">OUT OF STOCK</option>
           </select>
-
           <button
             type="submit"
             className="bg-[#025E92] text-white px-6 py-2 rounded font-semibold hover:bg-[#01446d] transition-colors"
           >
-            Submit
+            {editingId !== null ? 'Update' : 'Submit'}
           </button>
         </form>
       )}
@@ -115,11 +149,19 @@ const MedicalSupplies = () => {
                   </span>
                 </td>
                 <td>
-                  <div className="action-buttons">
-                    <button className="action-button edit">
+                  <div className="action-buttons flex gap-3">
+                    <button
+                      className="action-button edit"
+                      onClick={() => handleEdit(supply)}
+                      title="Edit"
+                    >
                       <Edit size={16} />
                     </button>
-                    <button className="action-button delete">
+                    <button
+                      className="action-button delete"
+                      onClick={() => handleDelete(supply.id)}
+                      title="Delete"
+                    >
                       <Trash2 size={16} />
                     </button>
                   </div>

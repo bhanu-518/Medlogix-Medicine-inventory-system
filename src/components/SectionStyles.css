@@ -124,7 +124,12 @@
 /* ===== ALERT ICON ===== */
 .alert-icon {
   color: #991b1b;
+ 
+  display: block;      /* Make icon a block-level element */
+  margin: 0 auto;      /* Auto left/right margin centers it horizontally */
 }
+
+
 
 /* ===== CRITICAL/LOW ROWS ===== */
 .critical-row {
@@ -166,12 +171,44 @@
 }
 
 /* ===== REPORT CONTENT ===== */
+.section {
+  width: 95%;
+  margin: auto;
+}
+
 .reports-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns */
-  gap: 1.5rem;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+   grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  column-gap: 3rem; /* Wider gap between columns */
+  row-gap: 1.5rem;  /* Keep row gap normal */
   margin-bottom: 2rem;
 }
+
+.report-card {
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.report-icon {
+  color: #025e92;
+  margin-bottom: 0.5rem;
+}
+
+.report-content h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.export-button {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
 
 .report-content h3 {
   font-size: 1.2rem;
