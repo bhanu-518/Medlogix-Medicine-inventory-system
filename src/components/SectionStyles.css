@@ -6,15 +6,28 @@
   font-weight: 600;
   color: white;
 }
-.badge.danger {
-  background-color: #e74c3c;
+
+.status-badge.warning {
+  background-color: #d5b512; /* orange/yellow */
+  color: white;
 }
-.badge.warning {
-  background-color: #f39c12;
+
+.status-badge.critical {
+  background-color: #f886aa; /* distinct orange-red */
+  color: white;
 }
-.badge.success {
-  background-color: #27ae60;
+
+.status-badge.danger {
+  background-color: #d9534f; /* bootstrap red */
+  color: white;
 }
+
+.status-badge.success {
+  background-color: #5cb85c; /* green */
+  color: white;
+}
+
+
 
 /* ===== CONTAINER SECTION ===== */
 .section {

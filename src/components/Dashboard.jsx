@@ -12,6 +12,8 @@ import {
 import MedicalSupplies from "./MedicalSupplies";
 import Home from "./Home";
 import TrackExpiryDamage from "./TrackExpiryDamage";
+import CheckStock from "./CheckStock";
+import ManageUser from "./ManageUser";
 import GenerateReport from "./GenerateReport";
 import { Pill } from "lucide-react";
 import Medications from "./Medications";
@@ -35,25 +37,20 @@ function Dashboard({ onLogout }) {
 
   function renderMainContent() {
     switch (activeView) {
-      case "home": return <Home />;
-      case "medications": return <Medications />;
-      case "supplies": return <MedicalSupplies />;
+      case "home":
+        return <Home />;
+      case "medications":
+        return <Medications />;
+      case "supplies":
+        return <MedicalSupplies />;
       case "stock":
-        return (
-          <div className="bg-white rounded-xl shadow-md p-10 w-full max-w-4xl mt-10">
-            <h2 className="text-xl font-bold mb-2 text-center">Check Stock Levels</h2>
-            <p className="text-gray-500 text-center">Stock checking coming soon.</p>
-          </div>
-        );
-      case "expiry": return <TrackExpiryDamage />;
-      case "reports": return <GenerateReport />;
+        return <CheckStock />;
+      case "expiry":
+        return <TrackExpiryDamage />;
+      case "reports":
+        return <GenerateReport />;
       case "users":
-        return (
-          <div className="bg-white rounded-xl shadow-md p-10 w-full max-w-4xl mt-10">
-            <h2 className="text-xl font-bold mb-2 text-center">Manage Users</h2>
-            <p className="text-gray-500 text-center">User management coming soon.</p>
-          </div>
-        );
+        return <ManageUser />;
       default: return null;
     }
   }
